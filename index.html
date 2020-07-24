@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <title>我想我想 | 一粒</title>
+  <style>
+    div[contenteditable]:empty:before {
+      content: attr(placeholder);
+      color: #99a2aa;
+    }
+
+    div[contenteditable]:focus {
+      content: none;
+      outline: none;
+    }
+
+
+    body {
+      background-color: #f7f7f7;
+    }
+
+    #main {
+      width: 90vw;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    article {
+      background-color: white;
+      padding: 16px;
+      margin: 12px 0;
+      border-radius: 4px;
+      box-shadow: 0 10px 20px 0 rgba(236, 236, 236, .86);
+    }
+
+    .time {
+      color: #99a2aa;
+      font-size: 12px;
+    }
+    img{
+      width: 100%;
+      margin: 5px auto;
+    }
+  </style>
+  <script>
+  function handlepaste(elem, event) {
+    event.preventDefault();
+    let text;
+    if (window.clipboardData) {
+        text = window.clipboardData.getData("text");
+    } else {
+        text = event.clipboardData.getData("text/plain");
+    }
+    document.execCommand("insertHTML", false, text);
+
+    /* 就这3行也行
+    event.preventDefault();
+    let text = event.clipboardData.getData("text/plain");
+    document.execCommand("insertHTML", false, text);
+    */
+}
+function clone() {
+    let html = '<!DOCTYPE html>\n' + document.getElementsByTagName('html')[0].innerHTML;
+    //console.log(html);
+
+    let blob = new Blob([html]);
+    //let url = window.URL || window.webkitURL;
+    let blobURL = URL.createObjectURL(blob);
+
+    let download = document.createElement('a');
+    download.download = "index.html";
+    download.href = blobURL;
+    download.click();
+}
+function add() {
+    let text = document.getElementById('add').innerHTML;
+    text = text.replace(/\r\n/g,"<br>")
+    text = text.replace(/\n/g,"<br>");
+    let newArticle = document.createElement('article');
+    newArticle.innerHTML = `<div class="time">` + time() + `</div>` + text;
+    console.log(newArticle);
+
+    let last = document.getElementsByTagName('article')[1];
+    let main = document.getElementById('main');
+
+    if (text) {
+        main.insertBefore(newArticle, last);
+        document.getElementById('add').innerHTML = "";
+    }
+
+}
+function time() {
+    let d = new Date();
+    let month = d.getMonth() + 1;
+    return d.getFullYear() + "/" + month + "/" + d.getDate();
+}
+  </script>
+</head>
+
+<body>
+  <div id="main">
+
+
+
+
+
+    <article>
+      <div id="add" contenteditable="true" onpaste="handlepaste(this, event);return false;" placeholder="点击这里开始编辑" autofocus=""></div> <br>
+      <button onclick="add()">发布</button> <button onclick="clone()">下载</button>
+    </article>
+
+
+
+    <article><div class="time">2020/7/13</div>我忘了半年前定的一个小目标</article><article><div class="time">2020/7/12</div>是我太理想化了还是焦虑症又发作了找了一晚上APP</article><article><div class="time">2020/7/11</div><div>其实是支持图片的qaq</div><img src="https://www.w3school.com.cn/i/eg_tulip.jpg" alt="上海鲜花港 - 郁金香"></article><article><div class="time">2020/7/10</div>梦里学数学，梦醒</article><article><div class="time">2020/7/9</div>我可能不适合暗黑破坏神3等游戏</article><article><div class="time">2020/7/8</div>受害者有罪论</article><article><div class="time">2020/7/7</div>发育正常，营养一般，神志清楚，精神欠佳，自主体位，正常面容，表情痛苦，扶入病房</article><article><div class="time">2020/7/6</div>风扇一开，无欲无求，就是还会想空调</article><article><div class="time">2020/7/4</div>油条让这个世界恶心了一分钟</article><article><div class="time">2020/7/1</div>不想学习想躺在床上什么都不干</article><article><div class="time">2020/6/30</div>游戏 咖啡 可乐 赌博 烟草 甜品 色情 酒精 奶茶</article><article>
+      <div class="time">2020/6/27</div>我不知道
+    </article>
+
+  </div>
+
+
+</body>
